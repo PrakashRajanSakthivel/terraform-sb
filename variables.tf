@@ -53,10 +53,18 @@ variable "topics" {
       ]
     },
     {
-     name = "newtopic",
+     name = "sb_oracle_topic_eventum_reply_created",
       subscriptions = [
         {
-          name = "new sub"
+          name = "sb_oracle_eventum_reply_created_subscription"
+        }
+      ] 
+    },
+    {
+     name = "sb_oracle_topic_eventum_request_created",
+      subscriptions = [
+        {
+          name = "sb_oracle_eventum_request_created_subscription"
         }
       ] 
     }
@@ -97,6 +105,25 @@ locals {
     primary_key                 = azurerm_servicebus_namespace.servicebus.default_primary_key
     secondary_key               = azurerm_servicebus_namespace.servicebus.default_secondary_key
   }
+
+  # topics = [
+  #   for topic in var.topics : merge({
+  #     name                       = ""
+  #     status                     = "Active"
+  #     auto_delete_on_idle        = null
+  #     default_message_ttl        = null
+  #     enable_batched_operations  = null
+  #     enable_express             = null
+  #     enable_partitioning        = null
+  #     max_size                   = null
+  #     enable_duplicate_detection = null
+  #     enable_ordering            = null
+  #     authorization_rules        = []
+  #     subscriptions              = []
+
+  #     duplicate_detection_history_time_window = null
+  #   }, topic)
+  # ]
 
   topics = [
     for topic in var.topics : merge({
