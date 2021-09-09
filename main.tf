@@ -14,23 +14,36 @@ resource "azurerm_servicebus_namespace" "servicebus" {
 # Topic
 
 resource "azurerm_servicebus_topic" "topic" {
-  count = length(local.topics)
+  for_each = toset(local.topics)
+  # count = length(local.topics)
 
-  name                = local.topics[count.index].name
+  name                = each.value.name #local.topics[count.index].name
   resource_group_name = var.resource_group_name
   namespace_name      = azurerm_servicebus_namespace.servicebus.name
 
-  status                       = local.topics[count.index].status
-  auto_delete_on_idle          = local.topics[count.index].auto_delete_on_idle
-  default_message_ttl          = local.topics[count.index].default_message_ttl
-  enable_batched_operations    = local.topics[count.index].enable_batched_operations
-  enable_express               = local.topics[count.index].enable_express
-  enable_partitioning          = local.topics[count.index].enable_partitioning
-  max_size_in_megabytes        = local.topics[count.index].max_size
-  requires_duplicate_detection = local.topics[count.index].enable_duplicate_detection
-  support_ordering             = local.topics[count.index].enable_ordering
+  status                       = "Active"
+  auto_delete_on_idle          = "P10675199DT2H48M5.4775807S"
+  default_message_ttl          = "P10675199DT2H48M5.4775807S"
+  enable_batched_operations    = true
+  enable_express               = false
+  enable_partitioning          = false
+  max_size_in_megabytes        = 1024
+  requires_duplicate_detection = true
+  support_ordering             = true
 
-  duplicate_detection_history_time_window = local.topics[count.index].duplicate_detection_history_time_window
+  duplicate_detection_history_time_window = "PT10M"
+  
+  # status                       = local.topics[count.index].status
+  # auto_delete_on_idle          = local.topics[count.index].auto_delete_on_idle
+  # default_message_ttl          = local.topics[count.index].default_message_ttl
+  # enable_batched_operations    = local.topics[count.index].enable_batched_operations
+  # enable_express               = local.topics[count.index].enable_express
+  # enable_partitioning          = local.topics[count.index].enable_partitioning
+  # max_size_in_megabytes        = local.topics[count.index].max_size
+  # requires_duplicate_detection = local.topics[count.index].enable_duplicate_detection
+  # support_ordering             = local.topics[count.index].enable_ordering
+
+  # duplicate_detection_history_time_window = local.topics[count.index].duplicate_detection_history_time_window
 }
 
 # Subscription
